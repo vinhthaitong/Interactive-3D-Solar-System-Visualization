@@ -32,8 +32,8 @@ Assets/
   Materials/                  # Thai
   Textures/                   # Thai
   Data/                       # Denny
-Packages/                     # Unity-generated package files pending
-ProjectSettings/              # Unity-generated settings pending
+Packages/                     # Unity-generated package files
+ProjectSettings/              # Unity-generated settings
 .github/pull_request_template.md
 .gitignore
 README.md                     # Setup, tasks, collaboration, and progress
@@ -64,7 +64,7 @@ If you already have this repository, use that existing folder instead of cloning
 
 ### 2. First initialization — Thai only
 
-The repository currently contains source and a scene generator. `Main.unity`, `Packages/manifest.json`, and Unity-generated project settings have not been generated yet. Thai completes these steps once before teammates begin feature work:
+**Completed:** Main.unity, package files, project settings, and asset .meta files are now included. Teammates can skip this section and follow section 3. The steps below document how Thai initialized the project; they are only needed if recreating the foundation.
 
 1. In Unity Hub create a **separate temporary project** using **6000.6.8f1** and the **3D Built-In Render Pipeline** template. Open it once, wait for initialization, then close the Editor.
 2. Copy that temporary project's generated `Packages/manifest.json`, `Packages/packages-lock.json` (if generated), and the contents of `ProjectSettings/` into the corresponding directories in this repository. Preserve the repository's existing `Assets/` and README. Do not copy `Library/`, `Temp/`, or template scenes.
@@ -95,16 +95,16 @@ Do not commit if Unity still reports errors. Keep this README's progress section
 
 ### Verification checklist
 
-These checks are **pending**, not recorded as passed:
+The user supplied a screenshot showing successful Play mode with all nine placeholders on November 4, 2026. Settings were also inspected on disk. Unchecked items still require explicit verification.
 
 - [ ] Console has no compilation errors or runtime exceptions.
 - [ ] SolarSystem contains Sun and Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune in order.
 - [ ] Each planet has a collider and matching CelestialBody; the Sun has no PlanetId.
 - [ ] SolarSystemReferences holds the Sun, eight planets, Main Camera, and SelectionService.
-- [ ] The Game view shows all placeholders with a camera and directional light.
+- [x] The Game view shows all nine placeholders in Play mode (user screenshot).
 - [ ] Selecting a different body through SelectPlanet updates CurrentSelection and raises SelectionChanged; repeating the selection does not; null clears it.
 - [ ] Running the scene generator again refuses to overwrite Main.unity.
-- [ ] Project settings use Force Text serialization and Visible Meta Files; Main is enabled as the startup scene in build settings/profiles.
+- [x] Project settings use Force Text serialization and Visible Meta Files; Main is enabled as the startup scene in build settings/profiles (files inspected).
 - [ ] Git tracks `.meta` files and excludes `Library/`, `Temp/`, `Obj/`, `Build/`, `Builds/`, `Logs/`, and `UserSettings/`.
 
 ## Shared components
@@ -234,7 +234,7 @@ Course Project Progress report due: **November 9, 2026**.
 
 ### Completed work
 
-Repository foundation: shared Core source, starter-scene Editor command, Git ignore rules, pull request template, and this consolidated README. Unity-generated scene and project settings are pending.
+Repository foundation: shared Core source, starter-scene Editor command, Git ignore rules, pull request template, and this consolidated README. Unity-generated Main.unity, project settings, package manifest/lock, and asset .meta files are included. The user demonstrated the stationary starter scene in Play mode on macOS.
 
 ### Work in progress
 
@@ -242,7 +242,7 @@ Fill in actual work and evidence; do not mark planned features complete.
 
 ### Problems encountered
 
-Unity was unavailable during foundation creation. Unity 6000.6.8f1 is now installed on Thai’s Mac, but compilation and runtime verification are still pending.
+Unity was unavailable during foundation creation. After installation, unused Visual Scripting and Timeline packages produced compiler errors. Those dependencies were removed; the user subsequently demonstrated Play mode with nine placeholders. A package-folder metadata warning was visible. A full Console review and Windows verification remain pending.
 
 ### Changes from the original plan
 
@@ -250,7 +250,7 @@ Team changed from five to four after Zachary Sherrell dropped the course. Scene/
 
 ### Upcoming tasks
 
-Initialize Unity with 6000.6.8f1, generate and verify Main.unity, then implement assigned features on separate branches.
+Teammates clone the initialized project, install 6000.6.8f1, verify it opens on their computers, and implement assigned features on separate branches.
 
 ### Individual contributions
 
@@ -261,4 +261,4 @@ Initialize Unity with 6000.6.8f1, generate and verify Main.unity, then implement
 
 ### Testing evidence
 
-[Date, Editor version, tester, steps, observed result, known issues]
+November 4, 2026 — Unity 6000.6.8f1 on Thai’s Mac: user screenshot shows Main in Play mode with Sun and eight planet placeholders. No claim is made that selection events, all Console messages, or Windows behavior have been tested.
