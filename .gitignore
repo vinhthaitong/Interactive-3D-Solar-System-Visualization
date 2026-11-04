@@ -1,0 +1,27 @@
+# Unity generated folders (case insensitive)
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+# IDE-generated files
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.opendb
+*.VC.db
+# OS files
+.DS_Store
+Thumbs.db
+# Keep all Unity .meta files and generated package/settings files tracked.
