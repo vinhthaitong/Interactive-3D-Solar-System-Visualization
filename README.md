@@ -1,264 +1,253 @@
 # Interactive 3D Solar System Visualization
 
-CS 4361 Computer Graphics — Team 3. Unity, C#, and GitHub.
+CS 4361 Computer Graphics — Team 3. Unity 6000.6.8f1, C#, Built-In Render Pipeline.
 
-An educational solar system that will let users explore the Sun and eight major planets from a first-person view. This repository provides only the shared foundation; the application features remain assigned to the team.
+Thai's Scene & Visuals portion includes a stationary Sun and eight planets with
+2K Solar System Scope textures, illustrative orbital spacing, Sun lighting,
+textured Saturn rings and nine connected celestial prefabs. Active assets are
+organized by type, and obsolete textures and generation code have been removed.
+Motion, interactive camera controls, selection and information UI remain assigned
+to the other members.
 
-## Planned features
+## Open and demonstrate
 
-- Sun and Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune in order.
-- Planet revolution, axial rotation, and visible orbital paths.
-- First-person camera movement, zoom, and planet selection.
-- Selected planet name, distance from Sun, distance from Earth, diameter, moon count, and description.
-- Simple lighting, recognizable colors, materials, and optional textures.
+1. Install Unity Hub, Git and **Unity 6000.6.8f1** for your OS/CPU. All members
+   must use the exact version in ProjectSettings/ProjectVersion.txt.
+2. Clone the whole repository (including .meta files), or use your existing copy:
 
-The final application should start automatically with preset sizes and speeds. No advanced physics, multiplayer, extra settings, or third-party packages are planned.
+   ```bash
+   git clone https://github.com/vinhthaitong/Interactive-3D-Solar-System-Visualization.git
+   cd Interactive-3D-Solar-System-Visualization
+   ```
+
+3. Check out `feature/thai-scene-visuals` to run Thai's Scene & Visuals
+   implementation. Teammates develop their features on their assigned branches.
+4. In Unity Hub, add the folder containing Assets, Packages and ProjectSettings.
+   Open with 6000.6.8f1, wait for import/compilation, and open
+   **Assets → Scenes → Main** (`Main.unity`).
+5. Press **Play**. Use a **16:9 Game view** for the supplied overview framing.
+   The scene is stationary until teammates integrate their assigned controls and motion.
+6. Inspect Sun illumination, each planet's surface, and Saturn's tilted rings.
+   Select scene objects in the Hierarchy for close inspection in Scene view.
+   This does not require an in-game selection implementation.
+7. Stop Play before editing. Run **Solar System → Verify Thai Scene Visuals**
+   to check the saved contracts; inspect the Console for errors.
+
+The saved scene and generated assets are included: setup generation is not
+required on each launch. No additional downloads or third-party packages are needed.
+
+## Thai's implementation
+
+| Body | Orbital radius | Diameter | Appearance |
+| --- | ---: | ---: | --- |
+| Sun | 0 | 6 | Unlit yellow/orange surface and central point light |
+| Mercury | 7 | 1.2 | Dark gray rocky detail |
+| Venus | 10 | 1.9 | Cream/gold cloud texture |
+| Earth | 13.5 | 2 | Supplied day map with real continent shapes and emissive city lights |
+| Mars | 17 | 1.5 | Red/orange rocky detail |
+| Jupiter | 23 | 4.5 | Brown/cream bands and oval storm |
+| Saturn | 30 | 3.8 | Pale gold bands, tilted two-part rings |
+| Uranus | 37 | 2.9 | Light cyan bands |
+| Neptune | 43 | 2.8 | Deep blue bands |
+
+Sizes and distances are illustrative. The root positions lie in the XZ plane
+around the Sun with different initial phases. Adjacent orbital shells have
+clearance even at conjunction, including Saturn's outer ring radius of 4.104.
+The eight planets use the supplied 2048×1024 spherical image maps. Venus uses
+its cloudy atmosphere map as its visible exterior. Earth uses the
+day map for color and the night map for emissive city lights. Standard's emission
+is always present, so city lights are not explicitly masked by the day/night
+terminator. The Sun uses its supplied 2048×1024 image with the existing self-lit
+material and separate point light. Low ambient
+illumination retains surface readability while the Sun lights from the center.
+Saturn's supplied RGBA strip is mapped radially across both ring faces; alpha
+cutout preserves its gaps without adding colliders or transparency sorting issues.
+
+![Saved Main camera overview](Screenshots/SceneOverview.png)
+
+[Planet surface closeups](Screenshots/PlanetSurfaces.png) show Sun, Mercury,
+Venus / Earth, Mars, Jupiter / Saturn, Uranus, Neptune in a 3×3 grid.
+[Earth's night hemisphere](Screenshots/EarthNight.png) shows the city-light map.
+
+## Texture credits
+
+Sun, planet, Earth day/night and Saturn ring texture images are by
+[Solar System Scope — Solar Textures](https://www.solarsystemscope.com/textures/),
+distributed under the
+[Creative Commons Attribution 4.0 International license (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+
+The eleven included 2K source images in `Assets/Textures/CelestialBodies/` were
+copied unchanged from the supplied downloads. This project applies Unity import
+settings, materials, spherical/radial UV mapping and Earth city-light emission;
+the source image files themselves were not edited. Source and license checked
+November 19, 2026.
 
 ## Project structure
 
+The active project files are grouped by asset type:
+
 ```text
 Assets/
-  Scenes/                     # Main.unity generated in Unity
-  Scripts/
-    Core/                     # Four shared components
-    Editor/                   # CreateStarterScene menu command
-    SceneSetup/               # Thai
-    UI/                       # Denny
-    CameraControls/           # Jose
-    Interaction/              # Jose
-    Motion/                   # Shivansh
-  Prefabs/CelestialBodies/     # Thai
-  Prefabs/UI/                  # Denny
-  Materials/                  # Thai
-  Textures/                   # Thai
-  Data/                       # Denny
-Packages/                     # Unity-generated package files
-ProjectSettings/              # Unity-generated settings
-.github/pull_request_template.md
-.gitignore
-README.md                     # Setup, tasks, collaboration, and progress
+  Materials/CelestialBodies/       # Nine body materials and Saturn rings
+  Meshes/CelestialBodies/          # Saturn's reusable ring geometry
+  Prefabs/CelestialBodies/         # Sun and eight planet prefabs
+  Scenes/Main.unity               # Shared integrated scene
+  Scripts/Core/                  # Shared contracts
+  Scripts/SceneSetup/Editor/      # Three visual setup/verification tools
+  Textures/CelestialBodies/       # Eleven active supplied image maps
+Screenshots/                     # Rendered verification images linked here
 ```
 
-Empty asset folders contain `.gitkeep` so Git preserves them. This README is the only maintained project documentation file; the pull request template remains for reviews.
+Reserved folders for other members remain under Scripts, Prefabs/UI and Data.
+This README is the shared setup and integration guide.
 
-## Setup on Windows and macOS
+Important files:
 
-**Team Editor version: Unity 6000.6.8f1 (Unity 6.6).** This exact Editor was detected on Thai's Mac. All four members should install the same full version, including the patch number.
+- `Assets/Scenes/Main.unity`: saved scene with existing shared references and nine
+  connected prefab instances.
+- `Assets/Materials/CelestialBodies/`: nine body materials and SaturnRings.
+- `Assets/Textures/CelestialBodies/`: eleven supplied maps used by those materials.
+- `Assets/Meshes/CelestialBodies/SaturnRings.asset`: the reusable ring mesh.
+- `Assets/Prefabs/CelestialBodies/`: Sun and eight planet prefabs.
+- `Assets/Scripts/SceneSetup/Editor/SolarSystemVisualSetup.cs`: updates the existing
+  scene, creates missing owned assets, connects prefabs and saves Main.
+- `Assets/Scripts/SceneSetup/Editor/PlanetTextureMaps.cs`: configures 2K imports,
+  updates existing material assets, sets Earth emission and radial ring UVs.
+- `Assets/Scripts/SceneSetup/Editor/SceneVisualVerification.cs`: contract checks,
+  batch repeatability/preservation checks, render capture and Play verification.
 
-### 1. Install the tools
+All visual setup code is Editor-only. The four shared Core components are unchanged.
 
-1. Install Git and Unity Hub on your computer.
-2. Sign in to Unity Hub and activate the license appropriate for your account when prompted.
-3. Under **Installs → Install Editor**, install **6000.6.8f1**. If it is absent from the current list, locate that exact version in the [official Unity download archive](https://unity.com/releases/editor/archive) and use its Unity Hub installation link.
-4. Windows users install the Windows Editor. Mac users select Apple Silicon or Intel to match their Mac. The Editor version number must match across operating systems.
-5. Android, iOS, and WebGL modules are not needed for the starter project. Add platform build support later only if the team needs to export to that platform.
+## Applying visuals and preserving integration work
 
-Run Git commands in **Terminal on macOS** or **Git Bash on Windows**. Start in the folder where you want the repository stored:
+Open Main, stop Play, then use **Solar System → Apply Thai Scene Visuals**.
+This is for initial setup or restoring missing owned assets, not a required Play step.
 
-```bash
-git clone https://github.com/vinhthaitong/Interactive-3D-Solar-System-Visualization.git
-cd Interactive-3D-Solar-System-Visualization
+The command preserves existing body objects, colliders, CelestialBody IDs and
+SolarSystemReferences. It recognizes the foundation's exact placeholder layout
+before setting radii/sizes; later transforms are preserved. It frames only the
+unchanged starter camera. Later camera controls remain Jose's work. A second
+run preserves existing materials, textures, prefabs, added children/components,
+body transforms, camera settings and Sun light edits. It never deletes scene
+objects, resets Main, or applies new overrides to existing prefab assets.
+
+Existing owned assets are reused, so editing a material in the Inspector is
+supported. The eleven included image maps are the required texture sources;
+unused procedural PNGs, their generator and the unused Venus surface alternative
+have been removed. New prefabs are connected only when that prefab asset is
+absent. Resolve pre-existing custom prefab connections with the owner rather
+than replacing them.
+
+The supplied maps are already assigned; no manual texture drag-and-drop is
+needed. **Solar System → Apply Supplied Planet Maps** explicitly reapplies the
+supplied textures and import settings to Thai's material and ring mesh assets.
+This command preserves asset GUIDs and does not reposition or replace scene
+objects. It deliberately resets those materials' appearance to the supplied maps;
+ordinary Apply Thai Scene Visuals continues to preserve later material edits.
+Use `PlanetTextureMaps.ApplyBatch` to apply and verify the maps in batch mode.
+**Solar System → Apply Supplied Sun Map** reapplies just the Sun image without
+changing planet materials, scene transforms or lighting. The Sun map is already
+assigned; this command is not required to run the scene.
+
+**Solar System → Create Starter Scene** is the older foundation command. It
+refuses to overwrite Main. Do not delete Main to rerun foundation creation.
+
+## Shared contracts and team responsibilities
+
+| Member | Branch | Assigned features |
+| --- | --- | --- |
+| Thai Tong | feature/thai-scene-visuals | Sun/planets, layout, lighting, materials/textures, celestial prefabs, Main integration and visual compatibility |
+| Denny Dat Tran | feature/denny-ui | Planet data, information panel, show/hide behavior and selection event subscription |
+| Jose Beltran Gonzalez | feature/jose-camera-selection | First-person navigation, zoom, raycast planet selection and selection notification |
+| Shivansh Vaidhyanathan | feature/shivansh-motion | Revolution, axial rotation, reusable movement components and visible orbit paths |
+
+The team changed from five members to four after Zachary Sherrell dropped the
+course; no tasks remain assigned to the former member.
+
+- `PlanetId`: Mercury through Neptune in orbital order; excludes the Sun.
+- `CelestialBody`: each planet's ID and BodyTransform. Planet colliders stay on
+  the same root as this component, so raycast hits can identify the body directly.
+- `SolarSystemReferences`: Sun Transform, eight CelestialBody references in ID
+  order, main Camera and SelectionService. These remain on SolarSystem.
+- `SelectionService`: CurrentSelection and SelectPlanet/SelectionChanged.
+  Jose publishes changes; Denny listens, handles null and unsubscribes when disabled.
+  UI should also read CurrentSelection on enable.
+
+Shivansh can move each referenced root Transform around the Sun and rotate it.
+Saturn's ring child and the Sun's light child follow their parent; rings have no
+collider that could intercept a selection ray. Preserve component and asset GUIDs.
+Do not rebuild the bodies or scene to integrate another member's system.
+
+Thai owns Assets/Scripts/SceneSetup, Assets/Scenes, Assets/Materials,
+Assets/Textures, Assets/Meshes and Assets/Prefabs/CelestialBodies. The existing
+starter command is in Assets/Scripts/Editor. Other source folders remain reserved
+for their owners.
+
+## Testing
+
+The automated checks cover names/IDs, body/reference counts, saved textures and
+materials, shader support, colliders and raycasts, prefab contents/connections,
+orbital clearance, ring geometry, lighting, camera framing, repeatability and
+saved-scene reload. A graphics-enabled run can save the actual Main camera image
+to `Screenshots/SceneOverview.png`. Play mode is a separate check.
+
+Latest implementation verification, November 19, 2026: Unity compilation,
+Editor contracts, supplied-map imports/materials, ring UVs/alpha cutout,
+repeatability, preservation probes, saved-scene reload and Metal rendering passed.
+The cleaned project also entered Play and passed its contract/render check on
+the first observed frame. Runs used an isolated copy while the main Editor stayed
+open; checkout assets matched the validated copy byte-for-byte.
+
+The final inventory is eleven referenced images, ten materials, nine celestial
+prefabs and one ring mesh. Cleanup preserved active GUIDs, left no missing asset
+references or unused image/material/mesh assets, and produced renders identical
+to those before reorganization. Surface closeups and Earth's night hemisphere
+were inspected.
+
+The older starter generator has a nonblocking deprecation warning. Sustained
+interactive demonstration, Windows and integration with teammates' actual
+features remain pending.
+
+For repeatable command-line verification, close the interactive Editor and run
+these arguments with your installed Unity executable from the repository root:
+
+```text
+-batchmode -quit -projectPath <repository-folder> -executeMethod SceneVisualVerification.RunBatch -logFile <log-file>
 ```
 
-If you already have this repository, use that existing folder instead of cloning again. Thai's current checkout is named `CS 4361-Project`; that folder name is fine.
+Use `SolarSystemVisualSetup.ApplyBatch` instead to apply visuals before checking.
+`-nographics` supports structural checks but cannot verify appearance. For the
+Play check, use `SceneVisualVerification.PlayModeBatch` and omit `-quit`; the
+check exits with its result after checking the first observed Play frame. The
+tests may temporarily simulate later edits and restore the exact saved Main file
+in a finally block.
 
-### 2. First initialization — Thai only
-
-**Completed:** Main.unity, package files, project settings, and asset .meta files are now included. Teammates can skip this section and follow section 3. The steps below document how Thai initialized the project; they are only needed if recreating the foundation.
-
-1. In Unity Hub create a **separate temporary project** using **6000.6.8f1** and the **3D Built-In Render Pipeline** template. Open it once, wait for initialization, then close the Editor.
-2. Copy that temporary project's generated `Packages/manifest.json`, `Packages/packages-lock.json` (if generated), and the contents of `ProjectSettings/` into the corresponding directories in this repository. Preserve the repository's existing `Assets/` and README. Do not copy `Library/`, `Temp/`, or template scenes.
-3. In Unity Hub select **Projects → Add → Add project from disk** and choose the repository root containing `Assets/`, `Packages/`, and `ProjectSettings/`.
-4. Open it with **6000.6.8f1** and wait for import and compilation. Unity creates genuine `.meta` files.
-5. Run **Solar System → Create Starter Scene** from the Editor menu. The command creates `Assets/Scenes/Main.unity`, connects the shared references, enables Force Text and Visible Meta Files, and sets Main as the startup build scene. It refuses to overwrite an existing Main scene.
-6. Open `Assets/Scenes/Main.unity`, press **Play**, and complete the verification checklist below. Stop Play before making persistent scene edits.
-7. Verify `ProjectSettings/ProjectVersion.txt` records `6000.6.8f1`. Commit the generated scene, `.meta` files, package files, and project settings to `main` as the remaining foundation initialization:
-
-```bash
-git status
-git add .
-git diff --cached --check
-git diff --cached --stat
-git commit -m "chore: generate Unity project settings and starter scene"
-git push origin main
-```
-
-Do not commit if Unity still reports errors. Keep this README's progress section accurate after verification.
-
-### 3. Open and run — all members after initialization
-
-1. Commit any local work before pulling updates. On `main`, run `git pull origin main`.
-2. Install the exact Editor version recorded in `ProjectSettings/ProjectVersion.txt`.
-3. In Unity Hub add the repository root as a project and open it. Each computer generates its own `Library/`; do not copy it from a teammate.
-4. Wait for import and compilation, then double-click `Assets/Scenes/Main.unity` and press **Play**.
-5. The starter should display nine stationary spheres: the Sun and eight planets. Sizes and spacing are illustrative. Camera movement, selection, motion, UI, and recognizable materials remain team tasks.
-
-### Verification checklist
-
-The user supplied a screenshot showing successful Play mode with all nine placeholders on November 4, 2026. Settings were also inspected on disk. Unchecked items still require explicit verification.
-
-- [ ] Console has no compilation errors or runtime exceptions.
-- [ ] SolarSystem contains Sun and Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune in order.
-- [ ] Each planet has a collider and matching CelestialBody; the Sun has no PlanetId.
-- [ ] SolarSystemReferences holds the Sun, eight planets, Main Camera, and SelectionService.
-- [x] The Game view shows all nine placeholders in Play mode (user screenshot).
-- [ ] Selecting a different body through SelectPlanet updates CurrentSelection and raises SelectionChanged; repeating the selection does not; null clears it.
-- [ ] Running the scene generator again refuses to overwrite Main.unity.
-- [x] Project settings use Force Text serialization and Visible Meta Files; Main is enabled as the startup scene in build settings/profiles (files inspected).
-- [ ] Git tracks `.meta` files and excludes `Library/`, `Temp/`, `Obj/`, `Build/`, `Builds/`, `Logs/`, and `UserSettings/`.
-
-## Shared components
-
-- `PlanetId`: eight planet identifiers in orbital order; excludes the Sun.
-- `CelestialBody`: identifies each planet and exposes BodyTransform.
-- `SelectionService`: stores CurrentSelection; SelectPlanet publishes SelectionChanged on changes, including null to clear.
-- `SolarSystemReferences`: Inspector references to Sun, planets, camera, and selection service.
-
-Thai creates bodies and references. Motion receives Transforms. Jose announces selections through SelectionService. Denny listens and updates UI. Keep shared contracts small and discuss major changes.
-
-
-## Team responsibilities
-
-### Thai Tong
-
-Branch: `feature/thai-scene-visuals`
-
-Owned directories: Assets/Scripts/SceneSetup/, Assets/Scenes/, Assets/Materials/, Assets/Textures/, Assets/Prefabs/CelestialBodies/
-
-- [ ] Sun and planets
-- [ ] Layout
-- [ ] Lighting
-- [ ] Materials
-- [ ] Textures
-- [ ] Celestial prefabs
-- [ ] Coordinate Main.unity and final integration
-
-### Denny Dat Tran
-
-Branch: `feature/denny-ui`
-
-Owned directories: Assets/Scripts/UI/, Assets/Data/, Assets/Prefabs/UI/
-
-- [ ] Planet data
-- [ ] Information panel
-- [ ] Show/hide behavior
-- [ ] Selection event subscription
-
-### Jose Beltran Gonzalez
-
-Branch: `feature/jose-camera-selection`
-
-Owned directories: Assets/Scripts/CameraControls/, Assets/Scripts/Interaction/
-
-- [ ] First-person navigation
-- [ ] Zoom
-- [ ] Raycast planet selection
-- [ ] SelectionService notification
-
-### Shivansh Vaidhyanathan
-
-Branch: `feature/shivansh-motion`
-
-Owned directories: Assets/Scripts/Motion/
-
-- [ ] Revolution
-- [ ] Axial rotation
-- [ ] Reusable movement components
-- [ ] Visible orbital paths
-
-### Shared integration
-
-- [ ] All members install Unity 6000.6.8f1 and verify the generated starter scene.
-- [ ] Discuss major Core changes before implementation.
-- [ ] Review pull requests and test components independently.
-- [ ] Thai coordinates scene integration; avoid simultaneous scene edits.
-- [ ] Test the combined application and fix integration issues.
-- [ ] Prepare the progress report, final report, presentation, and demonstration.
-
-The team changed from five members to four after Zachary Sherrell dropped the course. Responsibilities were redistributed among the four active members; no tasks are assigned to the former member.
-
-### Component contract
-
-Thai supplies colliders, CelestialBody components, and SolarSystemReferences. Shivansh receives Sun and planet Transforms. Jose calls SelectPlanet on the shared SelectionService. Denny subscribes to SelectionChanged, handles null to hide the panel, and unsubscribes when disabled. On enabling UI, read CurrentSelection as well, so a prior selection is displayed. Each system owns its own state. No feature implementations are included in this foundation.
+Manual team checks still include Windows with 6000.6.8f1, interactive Game-view
+appearance at the demonstration resolution, and integration with teammates'
+actual motion, camera, selection and UI. Do not infer those results from raycast
+or reference checks alone.
 
 ## Git collaboration
 
-Clone and update main:
-
-```bash
-git clone https://github.com/vinhthaitong/Interactive-3D-Solar-System-Visualization.git
-cd Interactive-3D-Solar-System-Visualization
-git switch main
-git pull origin main
-```
-
-Create your assigned branch once (replace the example with your actual assigned name):
-
-```bash
-git switch -c feature/your-branch-name
-```
-
-| Member | Branch |
-| --- | --- |
-| Thai | feature/thai-scene-visuals |
-| Denny | feature/denny-ui |
-| Jose | feature/jose-camera-selection |
-| Shivansh | feature/shivansh-motion |
-
-For an existing branch, use `git switch` without `-c`. Work primarily in your directories listed in the team responsibilities below. Discuss major Core changes first. Thai coordinates Main.unity; other members should test scripts and prefabs in their own separately named test scenes. Commit assets together with their .meta files. Move assets in Unity to preserve GUIDs. Do not commit caches or unfinished features to main.
-
-Review and commit work:
-
-```bash
-git status
-git add .
-git diff --cached
-git commit -m "feat: describe the implemented feature"
-git push -u origin feature/your-branch-name
-```
-
-To bring later main updates into your existing feature branch, first commit your work, then run these commands while on your feature branch:
+Commit local work before switching or pulling. Create an assigned feature branch
+once; use `git switch feature/your-branch-name` for an existing branch. Thai's
+current session uses `feature/thai-scene-visuals`.
 
 ```bash
 git fetch origin
+# On your feature branch, after committing your work:
 git merge origin/main
+# Review only the intended changes and their .meta files before committing:
+git status
+git diff --check
+git diff
 ```
 
-Resolve conflicts together with the affected owner, stage resolved files, and commit the merge. If you need to stop a conflicted merge, use `git merge --abort`. Do not discard teammate changes, force-push, or rewrite shared history. Ask Thai to resolve scene conflicts with the owners.
+Push the feature branch after committing, open a PR with main as the base and
+request teammate review. Coordinate Main edits with Thai; teammates should use
+their own test scenes. Do not force-push, discard others' work or rewrite shared
+history. Ignore Library, Temp, Logs, UserSettings and builds. Keep Assets .meta
+files, Packages and ProjectSettings tracked. All members use the same Editor
+version and generate their own local Library.
 
-On GitHub, open **Pull requests → New pull request**, select `main` as the base and your feature branch as the compare branch. Fill in the template, request teammate review, and merge after review and testing. Update local main afterward. No feature branches were created during initialization.
-
-## Project progress notes
-
-Course Project Progress report due: **November 9, 2026**.
-
-### Completed work
-
-Repository foundation: shared Core source, starter-scene Editor command, Git ignore rules, pull request template, and this consolidated README. Unity-generated Main.unity, project settings, package manifest/lock, and asset .meta files are included. The user demonstrated the stationary starter scene in Play mode on macOS.
-
-### Work in progress
-
-Fill in actual work and evidence; do not mark planned features complete.
-
-### Problems encountered
-
-Unity was unavailable during foundation creation. After installation, unused Visual Scripting and Timeline packages produced compiler errors. Those dependencies were removed; the user subsequently demonstrated Play mode with nine placeholders. A package-folder metadata warning was visible. A full Console review and Windows verification remain pending.
-
-### Changes from the original plan
-
-Team changed from five to four after Zachary Sherrell dropped the course. Scene/visuals: Thai; UI/data: Denny; camera/selection: Jose; motion/orbits: Shivansh.
-
-### Upcoming tasks
-
-Teammates clone the initialized project, install 6000.6.8f1, verify it opens on their computers, and implement assigned features on separate branches.
-
-### Individual contributions
-
-- Thai Tong: [record completed work and commit/PR]
-- Denny Dat Tran: [record completed work and commit/PR]
-- Jose Beltran Gonzalez: [record completed work and commit/PR]
-- Shivansh Vaidhyanathan: [record completed work and commit/PR]
-
-### Testing evidence
-
-November 4, 2026 — Unity 6000.6.8f1 on Thai’s Mac: user screenshot shows Main in Play mode with Sun and eight planet placeholders. No claim is made that selection events, all Console messages, or Windows behavior have been tested.
+The foundation was shared on main in November 2026.
