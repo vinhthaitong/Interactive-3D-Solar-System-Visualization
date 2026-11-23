@@ -162,6 +162,10 @@ GameObject:
   - component: {fileID: 690562516}
   - component: {fileID: 690562515}
   - component: {fileID: 690562514}
+  - component: {fileID: 690562517}
+  - component: {fileID: 690562518}
+  - component: {fileID: 690562519}
+  - component: {fileID: 690562520}
   m_Layer: 0
   m_Name: SolarSystem
   m_TagString: Untagged
@@ -229,6 +233,66 @@ Transform:
   - {fileID: 455579335}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &690562517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690562513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f880ce326b43fee46b584cf5243e4cbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetOrbit
+  solarSystem: {fileID: 690562515}
+  orbitSpeeds:
+  - 0.565814394
+  - 0.221591752
+  - 0.136340818
+  - 0.0724769529
+  - 0.0114965751
+  - 0.0046330759
+  - 0.00162776379
+  - 0.000832636566
+--- !u!114 &690562518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690562513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1498a3919b2e88b4ca7d7261907a974d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetRotation
+  sunRotationSpeed: -1.99166667
+  solarSystem: {fileID: 690562515}
+  rotationSpeeds:
+  - -0.848962774
+  - 0.204886412
+  - -50
+  - -48.5772358
+  - -120.707071
+  - -111.682243
+  - 69.4767442
+  - -74.2236025
+--- !u!114 &690562519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690562513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695b18a5f619d234f9c0e57dff2be7dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbitPath
+  solarSystem: {fileID: 690562515}
+  segments: 128
+  lineWidth: 0.1
 --- !u!114 &729364068 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8712917511594132867, guid: 0d0f6d4948b65411ead3a967d61f9780, type: 3}
@@ -1015,3 +1079,17 @@ SceneRoots:
   - {fileID: 690562516}
   - {fileID: 1642786916}
   - {fileID: 1243948076}
+--- !u!114 &690562520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690562513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86ea1110c0d14feb9f47b7f6139e80d4, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::SimulationControls
+  paused: 0
+  speed: 1
