@@ -9,12 +9,22 @@ public class OrbitPath : MonoBehaviour
     public float lineWidth = 0.06f;
 
     private Material orbitMaterial;
+    private Transform orbitRoot;
+
+    void LateUpdate()
+    {
+        if (orbitRoot != null && solarSystem != null && solarSystem.sun != null)
+            orbitRoot.position = solarSystem.sun.position;
+    }
 
     void Start()
     {
         if (solarSystem == null || solarSystem.sun == null)
             return;
 
+        orbitRoot = new GameObject("Orbit Paths").transform;
+        orbitRoot.SetParent(transform, false);
+        orbitRoot.position = solarSystem.sun.position;
         orbitMaterial = new Material(Shader.Find("Sprites/Default"));
 
         foreach (CelestialBody planet in solarSystem.planets)
@@ -31,14 +41,14 @@ public class OrbitPath : MonoBehaviour
         Vector3 center = solarSystem.sun.position;
         Vector3 offset = planet.transform.position - center;
         float radius = new Vector2(offset.x, offset.z).magnitude;
-        float height = planet.transform.position.y;
+        float height = offset.y;
 
         GameObject orbit = new GameObject(planet.name + " Orbit");
-        orbit.transform.SetParent(transform);
+        orbit.transform.SetParent(orbitRoot, false);
 
         LineRenderer line = orbit.AddComponent<LineRenderer>();
 
-        line.useWorldSpace = true;
+        line.useWorldSpace = false;
         line.loop = true;
         line.positionCount = segments;
         line.startWidth = lineWidth;
@@ -53,8 +63,8 @@ public class OrbitPath : MonoBehaviour
         {
             float angle = i * 2f * Mathf.PI / segments;
 
-            float x = center.x + Mathf.Cos(angle) * radius;
-            float z = center.z + Mathf.Sin(angle) * radius;
+            float x = Mathf.Cos(angle) * radius;
+            float z = Mathf.Sin(angle) * radius;
 
             line.SetPosition(i, new Vector3(x, height, z));
         }
@@ -62,6 +72,8 @@ public class OrbitPath : MonoBehaviour
 
     void OnDestroy()
     {
+        if (orbitRoot != null)
+            Destroy(orbitRoot.gameObject);
         if (orbitMaterial != null)
             Destroy(orbitMaterial);
     }

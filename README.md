@@ -2,12 +2,13 @@
 
 CS 4361 Computer Graphics — Team 3. Unity 6000.6.8f1, C#, Built-In Render Pipeline.
 
-Thai's Scene & Visuals portion includes a stationary Sun and eight planets with
+Thai's Scene & Visuals portion includes a Sun and eight planets with
 2K Solar System Scope textures, illustrative orbital spacing, Sun lighting,
 textured Saturn rings and nine connected celestial prefabs. Active assets are
 organized by type, and obsolete textures and generation code have been removed.
-Motion, interactive camera controls, selection and information UI remain assigned
-to the other members.
+Shivansh's revolution, axial rotation and orbit paths are integrated into Main.
+Pause and speed controls affect planetary motion only. Interactive camera controls,
+selection and information UI remain assigned to their respective owners.
 
 ## Open and demonstrate
 
@@ -26,7 +27,8 @@ to the other members.
    Open with 6000.6.8f1, wait for import/compilation, and open
    **Assets → Scenes → Main** (`Main.unity`).
 5. Press **Play**. Use a **16:9 Game view** for the supplied overview framing.
-   The scene is stationary until teammates integrate their assigned controls and motion.
+   Planets revolve and rotate. Use **Pause/Resume** and the **0.25x–5x speed slider**
+   in the upper-left corner. Camera navigation and information UI are unaffected.
 6. Inspect Sun illumination, each planet's surface, and Saturn's tilted rings.
    Select scene objects in the Hierarchy for close inspection in Scene view.
    This does not require an in-game selection implementation.
@@ -251,3 +253,37 @@ files, Packages and ProjectSettings tracked. All members use the same Editor
 version and generate their own local Library.
 
 The foundation was shared on main in November 2026.
+
+## Motion integration
+
+Main is the single demo and build scene. It uses PlanetOrbit, PlanetRotation, OrbitPath and
+SimulationControls on the existing SolarSystem object. Shared Core contracts,
+planet roots, colliders and prefab GUIDs are preserved. Speeds use the common accelerated clock described below.
+All eight planets use rounded sidereal spin and orbital periods from the
+[NASA Planetary Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/).
+Earth spins at 50 degrees/second: 23.9 real hours pass in 7.2 simulation seconds.
+Spin speed is -50 * 23.9 / signedRotationHours; orbital speed is
+50 * 23.9 / (orbitalDays * 24). Venus and Uranus spin retrograde.
+The Sun uses the same clock with a 25-day equatorial period (about -1.99167
+degrees/second), based on [NASA Sun facts](https://science.nasa.gov/sun/facts/).
+Its position stays fixed; pause/speed controls affect all motion together.
+
+At 1x, an Earth orbit takes about 44 minutes, so orbital movement is subtle.
+The slider can accelerate it up to 5x. Sizes, distances, circular coplanar orbits
+and axial orientations remain illustrative; these changes match periods and
+spin directions, not full physical dynamics or differential solar rotation.
+Saturn gets a runtime surface child; its root and tilted ring child do not spin.
+Orbit lines follow the Sun position in LateUpdate. Pausing uses a local motion
+multiplier rather than changing global Time.timeScale. Controls use Unity IMGUI
+and require no Canvas, EventSystem or extra packages.
+
+November 23 integration checks compiled successfully in Unity 6000.6.8f1.
+Automated scene checks passed before consolidation, including shared references, eight
+orbit paths, Saturn surface/collider setup, pause and Sun translation. A headless
+Main Play check observed revolution, surface rotation, a stable Saturn root and
+pause. The run also logged a Unity Editor Search indexing exception; no project
+script exception was reported. Visual controls and slider interaction still need
+an interactive Game-view check. The November 19 verification describes the earlier visuals.
+
+The duplicate motion test scene was removed after confirming its contents matched
+Main exactly. Open Main for visuals, planetary motion and pause/speed controls.

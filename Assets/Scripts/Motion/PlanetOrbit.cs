@@ -4,13 +4,23 @@ using UnityEngine;
 public class PlanetOrbit : MonoBehaviour
 {
     public SolarSystemReferences solarSystem;
+    private SimulationControls controls;
 
-    // Orbital speeds in degrees per second.
+    void Awake()
+    {
+        controls = GetComponent<SimulationControls>();
+    }
+
+    private float MotionDeltaTime => controls != null
+        ? controls.MotionDeltaTime : Time.deltaTime;
+
+    // NASA orbital periods: speed = 50 * 23.9 / (periodDays * 24).
+    // Same accelerated clock as axial rotation; degrees per second.
     // Mercury through Neptune, in PlanetId order.
     public float[] orbitSpeeds =
     {
-        36f, 26f, 20f, 16f,
-        11f, 8f, 6f, 5f
+        0.565814394f, 0.221591752f, 0.136340818f, 0.0724769529f,
+        0.0114965751f, 0.0046330759f, 0.00162776379f, 0.000832636566f
     };
 
     private float[] orbitAngles;
@@ -64,7 +74,7 @@ public class PlanetOrbit : MonoBehaviour
                 continue;
 
             orbitAngles[i] += orbitSpeeds[i] *
-                              Mathf.Deg2Rad * Time.deltaTime;
+                              Mathf.Deg2Rad * MotionDeltaTime;
 
             float x = Mathf.Cos(orbitAngles[i]) * orbitRadii[i];
             float z = Mathf.Sin(orbitAngles[i]) * orbitRadii[i];
