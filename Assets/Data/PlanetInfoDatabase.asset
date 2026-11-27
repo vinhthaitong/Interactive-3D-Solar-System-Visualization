@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3436fdaaa39f74c85c2713603aefcf, type: 3}
+  m_Name: PlanetInfoDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetInfoDatabase
+  planets:
+  - id: 0
+    displayName: Mercury
+    kind: Terrestrial planet
+    diameterKm: 4879
+    meanDistanceMillionKm: 57.9
+    orbitalPeriodDays: 88
+    description: The smallest planet and the closest to the Sun. Its heavily cratered surface records a long history of impacts.
+  - id: 1
+    displayName: Venus
+    kind: Terrestrial planet
+    diameterKm: 12104
+    meanDistanceMillionKm: 108.2
+    orbitalPeriodDays: 224.7
+    description: A thick atmosphere hides Venus's surface. Its intense greenhouse effect makes it the hottest planet.
+  - id: 2
+    displayName: Earth
+    kind: Terrestrial planet
+    diameterKm: 12756
+    meanDistanceMillionKm: 149.6
+    orbitalPeriodDays: 365.2
+    description: Our home planet has liquid water at the surface and is the only known world with life.
+  - id: 3
+    displayName: Mars
+    kind: Terrestrial planet
+    diameterKm: 6792
+    meanDistanceMillionKm: 228
+    orbitalPeriodDays: 687
+    description: The red planet has a thin atmosphere, polar ice, and evidence that liquid water flowed there long ago.
+  - id: 4
+    displayName: Jupiter
+    kind: Gas giant
+    diameterKm: 142984
+    meanDistanceMillionKm: 778.5
+    orbitalPeriodDays: 4331
+    description: The largest planet is a gas giant with broad cloud bands and the long-lived Great Red Spot storm.
+  - id: 5
+    displayName: Saturn
+    kind: Gas giant
+    diameterKm: 120536
+    meanDistanceMillionKm: 1432
+    orbitalPeriodDays: 10747
+    description: Saturn is a gas giant best known for its extensive rings, made mostly of ice and rocky debris.
+  - id: 6
+    displayName: Uranus
+    kind: Ice giant
+    diameterKm: 51118
+    meanDistanceMillionKm: 2867
+    orbitalPeriodDays: 30589
+    description: Uranus is an ice giant with a blue-green appearance and an unusually tilted rotation axis.
+  - id: 7
+    displayName: Neptune
+    kind: Ice giant
+    diameterKm: 49528
+    meanDistanceMillionKm: 4515
+    orbitalPeriodDays: 59800
+    description: The most distant planet is a dark blue ice giant with powerful winds and dynamic storms.

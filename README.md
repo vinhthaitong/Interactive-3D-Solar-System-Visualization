@@ -7,8 +7,9 @@ Thai's Scene & Visuals portion includes a Sun and eight planets with
 textured Saturn rings and nine connected celestial prefabs. Active assets are
 organized by type, and obsolete textures and generation code have been removed.
 Shivansh's revolution, axial rotation and orbit paths are integrated into Main.
-Pause and speed controls affect planetary motion only. Interactive camera controls,
-selection and information UI remain assigned to their respective owners.
+Pause and speed controls affect planetary motion only. Denny's information panel
+and planet picker are integrated. Interactive camera navigation and click selection
+remain assigned to Jose.
 
 ## Open and demonstrate
 
@@ -28,7 +29,8 @@ selection and information UI remain assigned to their respective owners.
    **Assets → Scenes → Main** (`Main.unity`).
 5. Press **Play**. Use a **16:9 Game view** for the supplied overview framing.
    Planets revolve and rotate. Use **Pause/Resume** and the **0.25x–5x speed slider**
-   in the upper-left corner. Camera navigation and information UI are unaffected.
+   in the upper-left corner. Choose a planet from the bottom picker to show its
+   facts; the X button clears the selection. Camera navigation is not yet integrated.
 6. Inspect Sun illumination, each planet's surface, and Saturn's tilted rings.
    Select scene objects in the Hierarchy for close inspection in Scene view.
    This does not require an in-game selection implementation.
@@ -100,7 +102,8 @@ Assets/
 Screenshots/                     # Rendered verification images linked here
 ```
 
-Reserved folders for other members remain under Scripts, Prefabs/UI and Data.
+CameraControls and Interaction remain reserved for Jose. Denny's UI scripts,
+information prefab and data asset are under Scripts/UI, Prefabs/UI and Data.
 This README is the shared setup and integration guide.
 
 Important files:
@@ -287,3 +290,30 @@ an interactive Game-view check. The November 19 verification describes the earli
 
 The duplicate motion test scene was removed after confirming its contents matched
 Main exactly. Open Main for visuals, planetary motion and pause/speed controls.
+
+## Planet information UI
+
+The saved Main scene includes Denny's screen-space information panel, eight-planet
+picker and Input System UI EventSystem. The reusable prefab is
+`Assets/Prefabs/UI/PlanetInformationUI.prefab`; editable facts are stored in
+`Assets/Data/PlanetInfoDatabase.asset`. Each record includes the planet name,
+type, diameter, mean distance from the Sun, orbital period and a short description.
+Numeric values are rounded from the
+[NASA Planetary Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/).
+The scene's illustrative positions and sizes are separate from these real values.
+
+`PlanetInfoPanel` reads `SelectionService.CurrentSelection` when enabled, listens
+to `SelectionChanged`, and unsubscribes when disabled. The bottom buttons publish
+through `SelectPlanet`, so the information panel can be demonstrated before Jose's
+camera raycast is ready. Jose's selector can use the same service without changing
+the panel. The X button calls `SelectPlanet(null)` and returns to the prompt.
+The panel currently displays no changing distance-from-Earth or moon count.
+
+If the owned UI assets are missing, stop Play, open Main and choose
+**Solar System → Apply Denny Planet Information UI**. Existing data and prefab
+assets are reused, so editing a fact in the Inspector is preserved. An isolated
+Unity 6000.6.8f1 batch run compiled the scripts, generated the prefab and scene,
+and passed a Play check for button selection, external selection, fact display
+and clearing selection. A separate Editor Search indexing exception appeared in
+the batch log; no project-script exception was observed. Interactive Game-view
+layout and integration with Jose's eventual camera controls still need review.
